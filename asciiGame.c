@@ -15,19 +15,7 @@ game limpaMatriz(game jogo){
 		for(y = 0; y < jogo.campo.y; y++){
 				jogo.campo.valor[x][y] = ' ';
 		}
-		// TO-DO-OK: E possivel reduzir o outros dois fors, por um unico aqui!!!
 	}
-	return jogo;
-}
-
-game verificaFase(game jogo){
-	if(jogo.fase == 1)
-		jogo = insereObjeto(jogo);
-
-	if(jogo.fase == 2)
-		jogo = insereObjeto(jogo);
-
-
 	return jogo;
 }
 
@@ -35,8 +23,7 @@ game verificaFase(game jogo){
 game verificaPonto(game jogo){
 	if(jogo.pl.posx == jogo.obj.x && jogo.pl.posy == jogo.obj.y){
 		jogo.pontos++;
-
-		jogo = verificaFase(jogo);
+		jogo = insereObjeto(jogo);
 	}
 	return jogo;
 }
@@ -88,7 +75,6 @@ game andaCima(game jogo){
 //Le acao do usuario chama a funcao que faz ele andar
 game lerAcao(game jogo, int tecla){ 
 
-	//TO-DO : Arrumado problema de apagar o bot ao andar com o char,mas poderia ser melhorado se a variavel espaco fosse integrada na struct jogo
 	if(jogo.pl.posx == jogo.bot.x && jogo.pl.posy == jogo.bot.y)
 		jogo.espaco = jogo.bot.name;
 	else
@@ -107,8 +93,6 @@ game lerAcao(game jogo, int tecla){
 		jogo = andaCima(jogo);
 	}
 
-	//TO-DO-OK : nem sempre mostra a batida
-	// PS: BATE SIM...u,u faca o teste agora
 	if(jogo.pl.posx == jogo.bot.x && jogo.pl.posy == jogo.bot.y )
 		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = '@';
 
@@ -154,17 +138,25 @@ int main(){
 		
 	jogo = iniciaFase1(jogo);
 
-	do{ //com o do--while ele nao espera uma tecla antes de comecar...
+	do{
 		
 		
 		jogo = update(jogo, ch);
 
-		if(jogo.pontos == 1 && cont == 0){	
+		if(jogo.pontos == 3 && cont == 0){	
 			printw("Ganhou! - Vamos para fase 2!\n");
 			getch();
 			cont++;
 			refresh();
 			jogo = iniciaFase2(jogo);
+			jogo = update(jogo, ch);
+
+		} else if(jogo.pontos == 1 && cont == 0){
+			//printw("Ganhou! - Vamos para fase 3!\n");
+			getch();
+			cont++;
+			refresh();
+			jogo = iniciaFase3(jogo);
 			jogo = update(jogo, ch);
 		}
  

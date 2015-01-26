@@ -36,13 +36,6 @@ void desenhaLife(int vidas){
 	printw("\n\n");
 }
 
-//TO-DO-OK : Verificar se e parede para ele andar
-//Tip: a funcao que anda o jogodar, poderia chamar uma funcao verificaParede, que poderia ser utilizado por esta funcao tambem.
-//Solution: O problema era que tinha um else... so quando caia naquele else ele andava na parede.Foi trocado o else por if.
-
-//TO-DO-OK : criar funcao verifica objeto para nao apaga-lo
-//Tip: similar a funcao verificaPonto()
-//Solution: criado a variavel espaco que se o inimigo estive no ponto...o espaco vira o ponto.
 game moverIni(game jogo){
 	int posx,posy,inix,iniy;
 	posx = jogo.pl.posx;
