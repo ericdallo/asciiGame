@@ -4,129 +4,129 @@
 #include "splashScreen.c"
 
 
-//Aloca espaco necessario para a matriz e coloca um espaco em cada local
-game limpaMatriz(game jogo){
+//Aloca background necessario para a matriz e coloca um background em cada local
+Game limpaMatriz(Game game){
 	int x, y;
 
 	//Alocar memoria para uma matriz
-	jogo.campo.valor = mallocc(jogo.campo.x * sizeof(char *));
-	for(x = 0; x <= jogo.campo.x; x++){
-		jogo.campo.valor[x] = mallocc(jogo.campo.y * sizeof(char));
-		for(y = 0; y < jogo.campo.y; y++){
-				jogo.campo.valor[x][y] = ' ';
+	game.map.valor = mallocc(game.map.x * sizeof(char *));
+	for(x = 0; x <= game.map.x; x++){
+		game.map.valor[x] = mallocc(game.map.y * sizeof(char));
+		for(y = 0; y < game.map.y; y++){
+				game.map.valor[x][y] = ' ';
 		}
 	}
-	return jogo;
+	return game;
 }
 
-//Verifica se o jogador esta em cima do objeto
-game verificaPonto(game jogo){
-	if(jogo.pl.posx == jogo.obj.x && jogo.pl.posy == jogo.obj.y){
-		jogo.pontos++;
-		jogo = insereObjeto(jogo);
+//Verifica se o jogador esta em cima do Coin
+Game verificaPonto(Game game){
+	if(game.player.posx == game.coin.x && game.player.posy == game.coin.y){
+		game.coins++;
+		game = insereObjeto(game);
 	}
-	return jogo;
+	return game;
 }
 
 //O personagem anda para direita(verificando se nao e uma parece e se ele marcou um ponto)
-game andaDireita(game jogo){
-	if(jogo.campo.valor[jogo.pl.posx][jogo.pl.posy+1] != jogo.campo.parede){
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = jogo.espaco;
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy+1] = jogo.pl.name;
-		jogo.pl.posy++;
-		jogo = verificaPonto(jogo);
+Game andaDireita(Game game){
+	if(game.map.valor[game.player.posx][game.player.posy+1] != game.map.wall){
+		game.map.valor[game.player.posx][game.player.posy] = game.background;
+		game.map.valor[game.player.posx][game.player.posy+1] = game.player.name;
+		game.player.posy++;
+		game = verificaPonto(game);
 	}
-	return jogo;
+	return game;
 }
 
 //O personagem anda para esquerda(verificando se nao e uma parece e se ele marcou um ponto)
-game andaEsquerda(game jogo){
-	if(jogo.campo.valor[jogo.pl.posx][jogo.pl.posy-1] != jogo.campo.parede){
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = jogo.espaco;
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy-1] = jogo.pl.name;
-		jogo.pl.posy--;
-		jogo = verificaPonto(jogo);
+Game andaEsquerda(Game game){
+	if(game.map.valor[game.player.posx][game.player.posy-1] != game.map.wall){
+		game.map.valor[game.player.posx][game.player.posy] = game.background;
+		game.map.valor[game.player.posx][game.player.posy-1] = game.player.name;
+		game.player.posy--;
+		game = verificaPonto(game);
 	}
-	return jogo;
+	return game;
 }
 
 //O personagem anda para baixo(verificando se nao e uma parece e se ele marcou um ponto)
-game andaBaixo(game jogo){
-	if(jogo.campo.valor[jogo.pl.posx+1][jogo.pl.posy] != jogo.campo.parede){
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = jogo.espaco;
-		jogo.campo.valor[jogo.pl.posx+1][jogo.pl.posy] = jogo.pl.name;
-		jogo.pl.posx++;
-		jogo = verificaPonto(jogo);
+Game andaBaixo(Game game){
+	if(game.map.valor[game.player.posx+1][game.player.posy] != game.map.wall){
+		game.map.valor[game.player.posx][game.player.posy] = game.background;
+		game.map.valor[game.player.posx+1][game.player.posy] = game.player.name;
+		game.player.posx++;
+		game = verificaPonto(game);
 	}
-	return jogo;
+	return game;
 }
 
 //O personagem anda para cima(verificando se nao e uma parece e se ele marcou um ponto)
-game andaCima(game jogo){
-	if(jogo.campo.valor[jogo.pl.posx-1][jogo.pl.posy] != jogo.campo.parede){
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = jogo.espaco;
-		jogo.campo.valor[jogo.pl.posx-1][jogo.pl.posy] = jogo.pl.name;
-		jogo.pl.posx--;
-		jogo = verificaPonto(jogo);
+Game andaCima(Game game){
+	if(game.map.valor[game.player.posx-1][game.player.posy] != game.map.wall){
+		game.map.valor[game.player.posx][game.player.posy] = game.background;
+		game.map.valor[game.player.posx-1][game.player.posy] = game.player.name;
+		game.player.posx--;
+		game = verificaPonto(game);
 	}
-	return jogo;
+	return game;
 }
 
 //Le acao do usuario chama a funcao que faz ele andar
-game lerAcao(game jogo, int tecla){ 
+Game lerAcao(Game game, int tecla){ 
 
-	if(jogo.pl.posx == jogo.bot.x && jogo.pl.posy == jogo.bot.y)
-		jogo.espaco = jogo.bot.name;
+	if(game.player.posx == game.enemy.x && game.player.posy == game.enemy.y)
+		game.background = game.enemy.name;
 	else
-		jogo.espaco = ' ';
+		game.background = ' ';
 	
 	if(tecla == KEY_RIGHT){
-		jogo = andaDireita(jogo);
+		game = andaDireita(game);
 
 	} else if(tecla == KEY_LEFT){
-		jogo = andaEsquerda(jogo);
+		game = andaEsquerda(game);
 
 	} else if(tecla == KEY_DOWN){
-		jogo = andaBaixo(jogo);
+		game = andaBaixo(game);
 
 	} else if(tecla == KEY_UP){
-		jogo = andaCima(jogo);
+		game = andaCima(game);
 	}
 
-	if(jogo.pl.posx == jogo.bot.x && jogo.pl.posy == jogo.bot.y )
-		jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = '@';
+	if(game.player.posx == game.enemy.x && game.player.posy == game.enemy.y )
+		game.map.valor[game.player.posx][game.player.posy] = '@';
 
-	return jogo;
+	return game;
 }	
 
 int main(){
-	mapa campo;
-	campo.parede = 'X';
+	Map map;
+	map.wall = 'X';
 	int ch = 42; //qualquer tecla
 	int cont = 0;
 	
-	objeto obj;	
-	obj.name = '#';
+	Coin coin;	
+	coin.name = '#';
 
-	player one;
-	one.posx = 1;
-	one.posy = 1;
-	one.life = 3;
-	one.name = 'o'; 
+	Player player;
+	player.posx = 1;
+	player.posy = 1;
+	player.life = 3;
+	player.name = 'o'; 
 
-	ini bot;
-	bot.x = 10;
-	bot.y = 16;
-	bot.name = '*';
-	bot.dificuldade = 0;
+	Enemy enemy;
+	enemy.x = 10;
+	enemy.y = 16;
+	enemy.name = '*';
+	enemy.difficulty = 0;
 
-	game jogo;
-	jogo.campo = campo;
-	jogo.pl = one;
-	jogo.pontos = 0;
-	jogo.bot = bot;
-	jogo.obj = obj;
-	jogo.espaco = ' ';
+	Game game;
+	game.map = map;
+	game.player = player;
+	game.coins = 0;
+	game.enemy = enemy;
+	game.coin = coin;
+	game.background = ' ';
 
 	initscr();					/* Start curses mode 		*/
 	raw();						/* Line buffering disabled	*/
@@ -136,28 +136,28 @@ int main(){
 	
 	printSplash();
 		
-	jogo = iniciaFase1(jogo);
+	game = iniciaFase1(game);
 
 	do{
 		
 		
-		jogo = update(jogo, ch);
+		game = update(game, ch);
 
-		if(jogo.pontos == 3 && cont == 0){	
-			printw("Ganhou! - Vamos para fase 2!\n");
+		if(game.coins == 3 && cont == 0){	
+			printw("Ganhou! - Vamos para level 2!\n");
 			getch();
 			cont++;
 			refresh();
-			jogo = iniciaFase2(jogo);
-			jogo = update(jogo, ch);
+			game = iniciaFase2(game);
+			game = update(game, ch);
 
-		} else if(jogo.pontos == 1 && cont == 0){
-			//printw("Ganhou! - Vamos para fase 3!\n");
+		} else if(game.coins == 1 && cont == 0){
+			//printw("Ganhou! - Vamos para level 3!\n");
 			getch();
 			cont++;
 			refresh();
-			jogo = iniciaFase3(jogo);
-			jogo = update(jogo, ch);
+			game = iniciaFase3(game);
+			game = update(game, ch);
 		}
  
 	}while ((ch = getch()) != 'c');

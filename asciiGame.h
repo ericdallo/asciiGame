@@ -3,64 +3,62 @@
 #include <time.h>
 #include <ncurses.h>
 
-typedef struct Objeto{
+typedef struct Coin{
 	char name;
-	char nome;
 	int x;
 	int y;
-}objeto;
+}Coin;
 
-typedef struct Jogador{
+typedef struct Player{
 	char name;
 	int life;
 	int posx;
 	int posy;
-}player;
+}Player;
 
-typedef struct Inimigo{
+typedef struct Enemy{
 	char name;
-	int dificuldade;
+	int difficulty;
 	int x;
 	int y;
+}Enemy;
 
-}ini;
-
-typedef struct Mapa{
+typedef struct Map{
 	char **valor;
-	char parede;
+	char wall;
 	int x;
 	int y;
-}mapa;
+}Map;
 
-typedef struct Jogo{
-	mapa campo;
-	player pl;
-	ini bot;
-	objeto obj;
-	int pontos;
-	int fase;
-	char espaco;
-}game;
+typedef struct Game{
+	Map map;
+	Player player;
+	Enemy enemy;
+	Coin coin;
+	int coins;
+	int level;
+	char background;
+}Game;
 /* ---------------------------------------------------
 
  -> MANTENHA SEMPRE ATUALIZADO <-
 
 */
 
-game limpaMatriz(game jogo);
+Game limpaMatriz(Game jogo);
 
-game verificaFase(game jogo);
+Game verificaFase(Game jogo);
 
-game verificaPonto(game jogo);
+Game verificaPonto(Game jogo);
 
-game andaDireita(game jogo);
+Game andaDireita(Game jogo);
 
-game andaEsquerda(game jogo);
+Game andaEsquerda(Game jogo);
 
-game andaBaixo(game jogo);
+Game andaBaixo(Game jogo);
 
-game andaCima(game jogo);
+Game andaCima(Game jogo);
 
-game lerAcao(game jogo, int tecla);
+Game lerAcao(Game jogo, int tecla);
 
 void printSplash();

@@ -1,71 +1,71 @@
 #include "fase.h"
 
-game insereJogador(game jogo){
-	jogo.campo.valor[jogo.pl.posx][jogo.pl.posy] = jogo.pl.name;
+Game insereJogador(Game jogo){
+	jogo.map.valor[jogo.player.posx][jogo.player.posy] = jogo.player.name;
 
 
 	return jogo;
 }
 
-game desenhaFase1(game jogo, int x, int y){
+Game desenhaFase1(Game jogo, int x, int y){
 
-	if(x == 0 || y == (jogo.campo.y-1) || x == (jogo.campo.x-1) || y == 0) //PAREDES
-		jogo.campo.valor[x][y] = jogo.campo.parede;
-
-	return jogo;
-}
-
-game desenhaFase2(game jogo, int x, int y){
-
-	if(y == (jogo.campo.y / 2) - x || x == (jogo.campo.x-1) || y == (jogo.campo.y / 2) + x) //PAREDES
-		jogo.campo.valor[x][y] = jogo.campo.parede;
+	if(x == 0 || y == (jogo.map.y-1) || x == (jogo.map.x-1) || y == 0) //PAREDES
+		jogo.map.valor[x][y] = jogo.map.wall;
 
 	return jogo;
 }
 
-game desenhaFase3(game jogo, int x, int y){
+Game desenhaFase2(Game jogo, int x, int y){
 
-	desenhaFase1(jogo, x, y);//Desenha o limite do campo
+	if(y == (jogo.map.y / 2) - x || x == (jogo.map.x-1) || y == (jogo.map.y / 2) + x) //PAREDES
+		jogo.map.valor[x][y] = jogo.map.wall;
+
+	return jogo;
+}
+
+Game desenhaFase3(Game jogo, int x, int y){
+
+	desenhaFase1(jogo, x, y);//Desenha o limite do map
 	//MAIOR IF DO MUNDO!!!!!
 	if((y == 5 && x < 17) || (y == 10 && (x >= 5 || x <= 2)) || (x == 10 && (y >= 15 && y <= 20)) || (y == 20 && (x < 15 && x > 10)) || 
 		(x == 15 && (y >= 15 && y <= 20)) || (y == 15 && x > 15 ) || (x == 5 && y > 18) || (y == 18 && (x <= 5 && x > 2)) ||
 		(y == 20 && x < 3) || (y == 23 && (x <= 12 && x >= 2)) || (y == 26 && x < 3) || ((y > 7 && y < 13) && x == 12) ||
 		(x == 3 && (y > 2 && y < 7)) || (x == 16 && (y > 2 && y < 8)) || (y == 15 && x < 7) || (x == 8 && y < 3)) //Labirinto
-		jogo.campo.valor[x][y] = jogo.campo.parede;
+		jogo.map.valor[x][y] = jogo.map.wall;
 
 	
 
 	return jogo;
 }
 
-//Desenha o campo com o personagem e as paredes
+//Desenha o map com o personagem e as walls
 //x = linha 
 //y = coluna
-game desenhaCampo(game jogo){
+Game desenhaCampo(Game jogo){
 	int x, y;
 
-	for(x = 0; x < jogo.campo.x; x++){
-		for(y = 0; y < jogo.campo.y; y++){	
+	for(x = 0; x < jogo.map.x; x++){
+		for(y = 0; y < jogo.map.y; y++){	
 			attron(COLOR_PAIR(2));
 
-			if(jogo.campo.valor[x][y] == jogo.campo.parede){
+			if(jogo.map.valor[x][y] == jogo.map.wall){
 				attron(COLOR_PAIR(4));
 				if(x != 0)
-					printw("%c ", jogo.campo.valor[x][y]);
+					printw("%c ", jogo.map.valor[x][y]);
 				else
-					printw("%c ", jogo.campo.valor[x][y]);
+					printw("%c ", jogo.map.valor[x][y]);
 				attroff(COLOR_PAIR(4));
 			}else
-				printw("%c ", jogo.campo.valor[x][y]);
+				printw("%c ", jogo.map.valor[x][y]);
 
 
-			if(jogo.fase == 1)
+			if(jogo.level == 1)
 				jogo = desenhaFase1(jogo, x, y);
 
-			if(jogo.fase == 2)
+			if(jogo.level == 2)
 				jogo = desenhaFase2(jogo, x, y);
 
-			if(jogo.fase == 3)
+			if(jogo.level == 3)
 				jogo = desenhaFase3(jogo, x, y);
 
 		}
@@ -77,54 +77,54 @@ game desenhaCampo(game jogo){
 
 
 
-//insere o objeto dentro do mapa em uma posicao aleatoria
+//insere o Coin dentro do Map em uma posicao aleatoria
 // c + l >= 21 && c - l <= 19  
 //TO - DO : falta verificar este caso: l < ? && l >= 2
 //c <= 38 && c >= 2
-game insereObjeto(game jogo){
+Game insereObjeto(Game jogo){
 	int x, y;
 
-	if(jogo.fase == 1){
+	if(jogo.level == 1){
 
 		do{
 			srand (time(NULL));
-			x = (rand() % (jogo.campo.x-2)) + 1;//coluna
-			y = (rand() % (jogo.campo.y-2)) + 1;//linha
+			x = (rand() % (jogo.map.x-2)) + 1;//coluna
+			y = (rand() % (jogo.map.y-2)) + 1;//linha
 
-		} while (jogo.pl.posx == x && jogo.pl.posy == y);
+		} while (jogo.player.posx == x && jogo.player.posy == y);
 
-	} else if(jogo.fase == 2){
+	} else if(jogo.level == 2){
 
 		do{
 			srand (time(NULL));
-			x = (rand() % (jogo.campo.x-2)) + 2;//coluna
-			y = (rand() % (jogo.campo.y-2)) + 1;//linha
+			x = (rand() % (jogo.map.x-2)) + 2;//coluna
+			y = (rand() % (jogo.map.y-2)) + 1;//linha
 
 		} while (x + y < 21 || x - y > 20);
 
-	} else if(jogo.fase == 3){
+	} else if(jogo.level == 3){
 
 		do{
 			srand (time(NULL));
-			x = (rand() % (jogo.campo.x-2)) + 2;//coluna
-			y = (rand() % (jogo.campo.y-2)) + 1;//linha
+			x = (rand() % (jogo.map.x-2)) + 2;//coluna
+			y = (rand() % (jogo.map.y-2)) + 1;//linha
 
 		} while (x + y < 21 || x - y > 20);
 	}
 	
-	jogo.obj.x = x;
-	jogo.obj.y = y;
+	jogo.coin.x = x;
+	jogo.coin.y = y;
 
-	jogo.campo.valor[x][y] = jogo.obj.name;
+	jogo.map.valor[x][y] = jogo.coin.name;
 	return jogo;
 }
 
-game iniciaFase1(game jogo){
-	jogo.campo.x = 20;
-	jogo.campo.y = 30;
-	jogo.fase = 1;
-	jogo.pl.posx = 1;
-	jogo.pl.posy = 1;
+Game iniciaFase1(Game jogo){
+	jogo.map.x = 20;
+	jogo.map.y = 30;
+	jogo.level = 1;
+	jogo.player.posx = 1;
+	jogo.player.posy = 1;
 
 	clear();
 
@@ -135,12 +135,12 @@ game iniciaFase1(game jogo){
 	return jogo;
 }
 
-game iniciaFase2(game jogo){
-	jogo.campo.x = 21;
-	jogo.campo.y = 40;
-	jogo.fase = 2;
-	jogo.pl.posx = 10;
-	jogo.pl.posy = 20;
+Game iniciaFase2(Game jogo){
+	jogo.map.x = 21;
+	jogo.map.y = 40;
+	jogo.level = 2;
+	jogo.player.posx = 10;
+	jogo.player.posy = 20;
 
 	clear();
 
@@ -151,12 +151,12 @@ game iniciaFase2(game jogo){
 	return jogo;
 }
 
-game iniciaFase3(game jogo){
-	jogo.campo.x = 20;
-	jogo.campo.y = 30;
-	jogo.fase = 3;
-	jogo.pl.posx = 2;
-	jogo.pl.posy = 2;
+Game iniciaFase3(Game jogo){
+	jogo.map.x = 20;
+	jogo.map.y = 30;
+	jogo.level = 3;
+	jogo.player.posx = 2;
+	jogo.player.posy = 2;
 
 	clear();
 
@@ -168,15 +168,15 @@ game iniciaFase3(game jogo){
 }
 
 
-void desenhaCabecalho(game jogo){
+void desenhaCabecalho(Game jogo){
 	attron(COLOR_PAIR(1));
-	printw("\t\t\tPontuacao = %d\n", jogo.pontos);
+	printw("\t\t\tPontuacao = %d\n", jogo.coins);
 	attroff(COLOR_PAIR(1));
-	desenhaLife(jogo.pl.life);
+	desenhaLife(jogo.player.life);
 }
 
-game update(game jogo, int ch){
-	jogo.bot.dificuldade = 0;
+Game update(Game jogo, int ch){
+	jogo.enemy.difficulty = 0;
 	
 	clear();
 	desenhaCabecalho(jogo);
@@ -184,20 +184,20 @@ game update(game jogo, int ch){
 	jogo = insereJogador(jogo);
 	
 
-	if(jogo.bot.dificuldade < 70)
+	if(jogo.enemy.difficulty < 70)
 		jogo = moverIni(jogo);
 	
 
 	jogo = lerAcao(jogo, ch);
 	jogo = desenhaCampo(jogo);
 
-	//TO - DO : criar funcao que modifica estas varaintes do bot
+	//TO - DO : criar funcao que modifica estas varaintes do enemy
 	srand (time(NULL));
-	jogo.bot.dificuldade = rand() % 100;
+	jogo.enemy.difficulty = rand() % 100;
 
 	if(verificaColisao(jogo)){
-		jogo.pl.life--;
-		if(jogo.pl.life == -1){
+		jogo.player.life--;
+		if(jogo.player.life == -1){
 			printw("\n\t\t\tGAME OVER...");
 			getch();
 			endwin();

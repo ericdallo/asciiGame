@@ -1,14 +1,14 @@
 void* mallocc(size_t size){
-	void *espacoDeMemoria;
-	espacoDeMemoria = malloc(size);
+	void *backgroundDeMemoria;
+	backgroundDeMemoria = malloc(size);
 
-	if(espacoDeMemoria == NULL){
+	if(backgroundDeMemoria == NULL){
 		printf("Erro Malloc\n");
 		printw("Erro Malloc\n");
 		exit(EXIT_FAILURE);
 	}
 
-	return espacoDeMemoria;
+	return backgroundDeMemoria;
 }
 
 void initCores(){
@@ -36,53 +36,53 @@ void desenhaLife(int vidas){
 	printw("\n\n");
 }
 
-game moverIni(game jogo){
+Game moverIni(Game jogo){
 	int posx,posy,inix,iniy;
-	posx = jogo.pl.posx;
-	posy = jogo.pl.posy;
-	inix = jogo.bot.x;
-	iniy = jogo.bot.y;
+	posx = jogo.player.posx;
+	posy = jogo.player.posy;
+	inix = jogo.enemy.x;
+	iniy = jogo.enemy.y;
 
 	srand (time(NULL));
 	int andou = rand() % 100;
 
-	if(inix == jogo.obj.x && iniy == jogo.obj.y)
-		jogo.espaco = jogo.obj.name;
+	if(inix == jogo.coin.x && iniy == jogo.coin.y)
+		jogo.background = jogo.coin.name;
 	else
-		jogo.espaco = ' ';
+		jogo.background = ' ';
 	
 	
-	if(inix > posx && andou < 40 && jogo.campo.valor[inix-1][iniy] != jogo.campo.parede ) {
-		jogo.campo.valor[inix][iniy] = jogo.espaco;
-		jogo.campo.valor[inix-1][iniy] = jogo.bot.name;
-		jogo.bot.x--;
+	if(inix > posx && andou < 40 && jogo.map.valor[inix-1][iniy] != jogo.map.wall ) {
+		jogo.map.valor[inix][iniy] = jogo.background;
+		jogo.map.valor[inix-1][iniy] = jogo.enemy.name;
+		jogo.enemy.x--;
 		return jogo;
 	}
-	if(inix < posx && andou < 40 && jogo.campo.valor[inix+1][iniy] != jogo.campo.parede){
-		jogo.campo.valor[inix][iniy] = jogo.espaco;
-		jogo.campo.valor[inix+1][iniy] = jogo.bot.name;
-		jogo.bot.x++;
+	if(inix < posx && andou < 40 && jogo.map.valor[inix+1][iniy] != jogo.map.wall){
+		jogo.map.valor[inix][iniy] = jogo.background;
+		jogo.map.valor[inix+1][iniy] = jogo.enemy.name;
+		jogo.enemy.x++;
 		return jogo;
 	} 
 	
-	if(iniy > posy && jogo.campo.valor[inix][iniy-1] != jogo.campo.parede){
-		jogo.campo.valor[inix][iniy] = jogo.espaco;
-		jogo.campo.valor[inix][iniy-1] = jogo.bot.name;
-		jogo.bot.y--;
+	if(iniy > posy && jogo.map.valor[inix][iniy-1] != jogo.map.wall){
+		jogo.map.valor[inix][iniy] = jogo.background;
+		jogo.map.valor[inix][iniy-1] = jogo.enemy.name;
+		jogo.enemy.y--;
 		return jogo;
 	}
-	if(iniy < posy && jogo.campo.valor[inix][iniy-1] != jogo.campo.parede){
-		jogo.campo.valor[inix][iniy] = jogo.espaco;
-		jogo.campo.valor[inix][iniy+1] = jogo.bot.name;
-		jogo.bot.y++;
+	if(iniy < posy && jogo.map.valor[inix][iniy-1] != jogo.map.wall){
+		jogo.map.valor[inix][iniy] = jogo.background;
+		jogo.map.valor[inix][iniy+1] = jogo.enemy.name;
+		jogo.enemy.y++;
 		return jogo;
 	}
 	
 	return jogo;
 }
 
-int verificaColisao(game jogo){
-	if(jogo.pl.posx == jogo.bot.x && jogo.pl.posy == jogo.bot.y){
+int verificaColisao(Game jogo){
+	if(jogo.player.posx == jogo.enemy.x && jogo.player.posy == jogo.enemy.y){
 		return 1;
 	}
 	return 0;
