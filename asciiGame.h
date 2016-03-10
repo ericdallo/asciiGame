@@ -45,20 +45,20 @@ typedef struct Game{
 
 */
 
-Game limpaMatriz(Game jogo);
+Game limpaMatriz(Game game);
 
-Game verificaFase(Game jogo);
+Game verificaFase(Game game);
 
-Game verificaPonto(Game jogo);
+Game verificaPonto(Game game);
 
-Game andaDireita(Game jogo);
+Game andaDireita(Game game);
 
-Game andaEsquerda(Game jogo);
+Game andaEsquerda(Game game);
 
-Game andaBaixo(Game jogo);
+Game andaBaixo(Game game);
 
-Game andaCima(Game jogo);
+Game andaCima(Game game);
 
-Game lerAcao(Game jogo, int tecla);
+Game lerAcao(Game game, int tecla);
 
 void printSplash();

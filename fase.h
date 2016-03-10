@@ -4,21 +4,21 @@
 
 */
 
-Game insereJogador(Game jogo);
+Game insereJogador(Game game);
 
-Game desenhaFase1(Game jogo, int x, int y);
+Game desenhaFase1(Game game, int x, int y);
 
-Game desenhaFase2(Game jogo, int x, int y);
+Game desenhaFase2(Game game, int x, int y);
 
-Game desenhaCampo(Game jogo);
+Game desenhaCampo(Game game);
 
-Game insereObjeto(Game jogo);
+Game insereObjeto(Game game);
 
-Game iniciaFase1(Game jogo);
+Game iniciaFase1(Game game);
 
-Game iniciaFase2(Game jogo);
+Game iniciaFase2(Game game);
 
-void desenhaCabecalho(Game jogo);
+void desenhaCabecalho(Game game);
 
-Game update(Game jogo, int ch);
+Game update(Game game, int ch);
 

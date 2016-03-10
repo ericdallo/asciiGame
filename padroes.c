@@ -36,53 +36,53 @@ void desenhaLife(int vidas){
 	printw("\n\n");
 }
 
-Game moverIni(Game jogo){
+Game moverIni(Game game){
 	int posx,posy,inix,iniy;
-	posx = jogo.player.posx;
-	posy = jogo.player.posy;
-	inix = jogo.enemy.x;
-	iniy = jogo.enemy.y;
+	posx = game.player.posx;
+	posy = game.player.posy;
+	inix = game.enemy.x;
+	iniy = game.enemy.y;
 
 	srand (time(NULL));
 	int andou = rand() % 100;
 
-	if(inix == jogo.coin.x && iniy == jogo.coin.y)
-		jogo.background = jogo.coin.name;
+	if(inix == game.coin.x && iniy == game.coin.y)
+		game.background = game.coin.name;
 	else
-		jogo.background = ' ';
+		game.background = ' ';
 	
 	
-	if(inix > posx && andou < 40 && jogo.map.valor[inix-1][iniy] != jogo.map.wall ) {
-		jogo.map.valor[inix][iniy] = jogo.background;
-		jogo.map.valor[inix-1][iniy] = jogo.enemy.name;
-		jogo.enemy.x--;
-		return jogo;
+	if(inix > posx && andou < 40 && game.map.valor[inix-1][iniy] != game.map.wall ) {
+		game.map.valor[inix][iniy] = game.background;
+		game.map.valor[inix-1][iniy] = game.enemy.name;
+		game.enemy.x--;
+		return game;
 	}
-	if(inix < posx && andou < 40 && jogo.map.valor[inix+1][iniy] != jogo.map.wall){
-		jogo.map.valor[inix][iniy] = jogo.background;
-		jogo.map.valor[inix+1][iniy] = jogo.enemy.name;
-		jogo.enemy.x++;
-		return jogo;
+	if(inix < posx && andou < 40 && game.map.valor[inix+1][iniy] != game.map.wall){
+		game.map.valor[inix][iniy] = game.background;
+		game.map.valor[inix+1][iniy] = game.enemy.name;
+		game.enemy.x++;
+		return game;
 	} 
 	
-	if(iniy > posy && jogo.map.valor[inix][iniy-1] != jogo.map.wall){
-		jogo.map.valor[inix][iniy] = jogo.background;
-		jogo.map.valor[inix][iniy-1] = jogo.enemy.name;
-		jogo.enemy.y--;
-		return jogo;
+	if(iniy > posy && game.map.valor[inix][iniy-1] != game.map.wall){
+		game.map.valor[inix][iniy] = game.background;
+		game.map.valor[inix][iniy-1] = game.enemy.name;
+		game.enemy.y--;
+		return game;
 	}
-	if(iniy < posy && jogo.map.valor[inix][iniy-1] != jogo.map.wall){
-		jogo.map.valor[inix][iniy] = jogo.background;
-		jogo.map.valor[inix][iniy+1] = jogo.enemy.name;
-		jogo.enemy.y++;
-		return jogo;
+	if(iniy < posy && game.map.valor[inix][iniy-1] != game.map.wall){
+		game.map.valor[inix][iniy] = game.background;
+		game.map.valor[inix][iniy+1] = game.enemy.name;
+		game.enemy.y++;
+		return game;
 	}
 	
-	return jogo;
+	return game;
 }
 
-int verificaColisao(Game jogo){
-	if(jogo.player.posx == jogo.enemy.x && jogo.player.posy == jogo.enemy.y){
+int verificaColisao(Game game){
+	if(game.player.posx == game.enemy.x && game.player.posy == game.enemy.y){
 		return 1;
 	}
 	return 0;
